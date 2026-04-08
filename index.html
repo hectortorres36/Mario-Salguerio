@@ -373,6 +373,26 @@
       padding: 6px; transition: color 0.2s;
     }
     .cart-clear:hover { color: #ff6b6b; }
+
+    .cart-name-wrap {
+      margin-bottom: 14px;
+    }
+    .cart-name-label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--text-ingr); margin-bottom: 6px;
+      transition: color 0.4s;
+    }
+    .cart-name-input {
+      width: 100%; padding: 10px 14px;
+      background: var(--bg-cart-item);
+      border: 1px solid rgba(245,197,24,0.25);
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+      color: var(--text-cart);
+      outline: none; transition: border-color 0.2s, background 0.4s, color 0.4s;
+    }
+    .cart-name-input::placeholder { color: var(--text-ingr); }
+    .cart-name-input:focus { border-color: #f5c518; }
   </style>
 </head>
 <body>
@@ -614,6 +634,10 @@
       body.innerHTML = `
         <div class="cart-items">${items}</div>
         <div class="cart-footer">
+          <div class="cart-name-wrap">
+            <label class="cart-name-label">Tu nombre</label>
+            <input class="cart-name-input" id="cartName" type="text" placeholder="Ej: Maria, Juan..." maxlength="40" />
+          </div>
           <div class="cart-total">
             <span class="cart-total-label">Total</span>
             <span class="cart-total-price">$${total.toFixed(2)}</span>
@@ -640,7 +664,9 @@
 
     function pedirPorWhatsapp() {
       const total = carrito.reduce((s, i) => s + i.precio * i.qty, 0);
-      let msg = 'Hola! Quiero hacer el siguiente pedido:\n\n';
+      const nombre = (document.getElementById('cartName')?.value || '').trim();
+      let msg = nombre ? `Hola! Soy *${nombre}* y quiero hacer el siguiente pedido:\n\n`
+                       : 'Hola! Quiero hacer el siguiente pedido:\n\n';
       carrito.forEach(i => {
         msg += `• ${i.qty}x ${i.nombre} - $${(i.precio * i.qty).toFixed(2)}\n`;
       });
