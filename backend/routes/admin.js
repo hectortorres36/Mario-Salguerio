@@ -100,6 +100,20 @@ router.get('/pedidos', authMiddleware, async (req, res) => {
   }
 });
 
+// DELETE /api/admin/pedidos/:id  — eliminar pedido
+router.delete('/pedidos/:id', authMiddleware, async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!id || id < 1) return res.status(400).json({ error: 'ID inválido.' });
+  try {
+    const [result] = await pool.execute('DELETE FROM pedidos WHERE id = ?', [id]);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Pedido no encontrado.' });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Error eliminando pedido:', err);
+    res.status(500).json({ error: 'Error interno.' });
+  }
+});
+
 // GET /api/admin/stats  — resumen general
 router.get('/stats', authMiddleware, async (req, res) => {
   try {

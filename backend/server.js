@@ -19,7 +19,7 @@ app.use(helmet({ crossOriginResourcePolicy: false }));
 // CORS: permitir cualquier origen (necesario para archivos locales y Railway)
 const corsOptions = {
   origin: true,
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
   credentials: true,
 };

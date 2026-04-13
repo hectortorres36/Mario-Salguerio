@@ -267,6 +267,18 @@
     .pedido-nombre { font-weight: 600; }
     .pedido-total  { color: var(--gold); font-weight: 700; }
     .pedido-fecha  { color: var(--muted); font-size: .78rem; }
+    .pedido-del-btn {
+      background: transparent;
+      border: 1px solid #444;
+      color: var(--muted);
+      font-size: .75rem;
+      padding: .25rem .6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: color .2s, border-color .2s;
+      margin-left: auto;
+    }
+    .pedido-del-btn:hover { color: var(--red); border-color: var(--red); }
     .pedido-notas  { color: var(--muted); font-size: .82rem; margin-top: .4rem; font-style: italic; }
 
     .pedido-items  { margin-top: .5rem; display: flex; flex-wrap: wrap; gap: .35rem; }
@@ -537,10 +549,11 @@
         return;
       }
       list.innerHTML = pedidos.map(p => `
-        <div class="pedido-card">
+        <div class="pedido-card" id="pedido-${p.id}">
           <div class="pedido-header">
             <span class="pedido-nombre">👤 ${escHtml(p.cliente_nombre)}</span>
             <span class="pedido-total">${fmt$(p.total)}</span>
+            <button class="pedido-del-btn" onclick="eliminarPedido(${p.id})">✕ Cancelar</button>
           </div>
           <div class="pedido-fecha">🕐 ${fmtFecha(p.created_at)}</div>
           <div class="pedido-items">
@@ -553,6 +566,22 @@
       `).join('');
     } catch (e) {
       list.innerHTML = `<div class="empty">Error al cargar pedidos: ${escHtml(e.message)}</div>`;
+    }
+  }
+
+  async function eliminarPedido(id) {
+    if (!confirm('¿Cancelar este pedido? Se eliminará permanentemente.')) return;
+    try {
+      const res = await fetch(`${API}/admin/pedidos/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'true' },
+      });
+      if (!res.ok) { alert('Error al eliminar el pedido.'); return; }
+      document.getElementById(`pedido-${id}`)?.remove();
+      loadStats();
+      loadClientes();
+    } catch {
+      alert('No se pudo conectar al servidor.');
     }
   }
 
