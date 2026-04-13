@@ -407,7 +407,7 @@
 </div>
 
 <script>
-  const API = 'http://localhost:3000/api';
+  const API = 'https://tortas-la-vaca-production.up.railway.app/api';
   let token = localStorage.getItem('admin_token') || '';
 
   // ── Auth ──────────────────────────────────────────────────
@@ -420,7 +420,7 @@
     try {
       const res = await fetch(`${API}/admin/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
         body: JSON.stringify({ password: pwd }),
       });
       const data = await res.json();
@@ -466,7 +466,7 @@
   // ── API helpers ───────────────────────────────────────────
   async function apiFetch(path) {
     const res = await fetch(`${API}${path}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'true' },
     });
     if (res.status === 401) { logout(); throw new Error('No autorizado'); }
     return res.json();

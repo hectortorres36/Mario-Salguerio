@@ -914,13 +914,13 @@
       document.getElementById('cartPanel').classList.remove('open');
     }
 
-    const BACKEND_URL = 'http://localhost:3000';
+    const BACKEND_URL = 'https://tortas-la-vaca-production.up.railway.app';
 
     async function guardarPedidoEnBD(nombre, notas, total) {
       try {
         await fetch(`${BACKEND_URL}/api/pedidos`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
           body: JSON.stringify({
             cliente_nombre: nombre || 'Anónimo',
             items: carrito.map(i => ({ nombre: i.nombre, precio: i.precio, qty: i.qty })),
