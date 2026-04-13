@@ -4,8 +4,8 @@ const jwt     = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 const { pool } = require('../db');
 
-const JWT_SECRET     = process.env.JWT_SECRET     || 'cambiar_en_produccion';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const JWT_SECRET     = process.env.JWT_SECRET     || process.env.JWT_SECRETO     || 'cambiar_en_produccion';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || process.env.ADMIN_CONTRASEÑA || 'admin123';
 
 // Rate limit para el login: máx 10 intentos cada 15 minutos
 const loginLimiter = rateLimit({
