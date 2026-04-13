@@ -69,12 +69,12 @@ router.get('/pedidos', authMiddleware, async (req, res) => {
     const limit  = Math.min(parseInt(req.query.limit)  || 50, 200);
     const offset = Math.max(parseInt(req.query.offset) || 0,  0);
 
-    const [pedidos] = await pool.execute(`
-      SELECT id, cliente_nombre, notas, total, created_at
-      FROM pedidos
-      ORDER BY created_at DESC
-      LIMIT ? OFFSET ?
-    `, [limit, offset]);
+    const [pedidos] = await pool.query(
+      `SELECT id, cliente_nombre, notas, total, created_at
+       FROM pedidos
+       ORDER BY created_at DESC
+       LIMIT ${limit} OFFSET ${offset}`
+    );
 
     if (pedidos.length === 0) return res.json([]);
 
