@@ -3,11 +3,11 @@
 -- Sistema de control de gastos y pedidos
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS tortas_la_vaca
+CREATE DATABASE IF NOT EXISTS tortasv
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-USE tortas_la_vaca;
+USE tortasv;
 
 -- Tabla de pedidos
 CREATE TABLE IF NOT EXISTS pedidos (
